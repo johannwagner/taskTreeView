@@ -1,0 +1,136 @@
+<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+<!---<meta http-equiv="refresh" content="5">-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+    let refreshFunction = function() {
+        const address = "http://localhost:" + {{serverPort}} + "/list"
+
+        $.ajax({
+            url: address,
+            success: (data) => {
+                console.log(data);
+                $('#listDiv').html(data) ;
+                console.log('Updated!');
+            }
+        });
+
+    };
+
+    window.setInterval(refreshFunction, 5000);
+
+</script>
+
+<style>
+    * {
+        font-family: 'Montserrat', sans-serif;
+        color: white;
+    }
+
+    body > div {
+        width: fit-content;
+        background-color: rgba(0, 0, 0, 0.5);
+        padding: 10px;
+    }
+
+    div > ul {
+        margin:0;
+        padding: 0;
+
+    }
+
+    ul {
+        width:auto;
+    }
+
+    ul li {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        width: auto;
+
+    }
+
+    @keyframes pendingItem {
+        0% {
+            background-color: darkgoldenrod;
+        }
+        50% {
+            background-color: rgba(0,0,0,0);
+        }
+
+        100% {
+            background-color: darkgoldenrod;
+        }
+    }
+
+    ul li:before {
+        content: "";
+        width: 0.5em;
+        height: 0.5em;
+        border-radius: 50%;
+        transform: translate(0, 0.3em);
+        display: block;
+        float: left;
+        margin-top: auto;
+        margin-right: 10px;
+
+    }
+
+    ul .finishedItem:before {
+        background: darkgreen;
+    }
+
+    ul .notFinishedItem:before {
+        background: red;
+    }
+
+    ul .pendingItem:before {
+        background: darkgoldenrod;
+        -webkit-animation-name: pendingItem;
+        -moz-animation-name: pendingItem;
+        -o-animation-name: pendingItem;
+        animation-name: pendingItem;
+        animation-duration: 3s;
+        animation-iteration-count: infinite;
+
+    }
+    ul .pendingItem {
+        color: darkgoldenrod;
+    }
+
+    ul .pendingItemNoAnim:before {
+        background: darkgoldenrod;
+    }
+
+    .legendContainer {
+        display:flex;
+        justify-content: center;
+    }
+
+    .legendContainer > ul > li {
+        float: left;
+        padding: 30px 10px 10px 10px;
+        color: rgba(255,255,255,0.8);
+
+    }
+</style>
+
+<div>
+
+
+    <div id="listDiv">
+        {{{listView}}}
+    </div>
+
+    <div class="legendContainer">
+        <ul>
+            <li class="finishedItem">
+                Finished
+            </li>
+            <li class="notFinishedItem">
+                Not Finished
+            </li>
+        </ul>
+    </div>
+
+</div>
